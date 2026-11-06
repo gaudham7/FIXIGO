@@ -1,0 +1,3 @@
+# Convenience entry point; use docker compose -f infrastructure/docker-compose.yml
+include:
+  - infrastructure/docker-compose.yml

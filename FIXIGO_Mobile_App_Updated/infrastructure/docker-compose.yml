@@ -1,0 +1,32 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: fixigo-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: fixigo
+      POSTGRES_USER: fixigo
+      POSTGRES_PASSWORD: fixigo_dev_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - fixigo_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fixigo -d fixigo"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: fixigo-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - fixigo_redis_data:/data
+    command: ["redis-server", "--appendonly", "yes"]
+
+volumes:
+  fixigo_postgres_data:
+  fixigo_redis_data:
